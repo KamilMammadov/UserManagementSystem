@@ -81,6 +81,7 @@ namespace UserManagement.ApplicationLogic
 
                  if (user is Admin)
                 {
+                    DashBoard dashBoard = new DashBoard(user);
                     DashBoard.AdminPanel(email);
                 }
                 else

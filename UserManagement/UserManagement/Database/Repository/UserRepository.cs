@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.ApplicationLogic.Validations;
 using UserManagement.Database.Models;
 
 namespace UserManagement.Database.Repository
@@ -55,6 +56,7 @@ namespace UserManagement.Database.Repository
             return admin;
         }
 
+       
         public static void Delete(User user)
         {
             Users.Remove(user);
@@ -94,25 +96,33 @@ namespace UserManagement.Database.Repository
             return false;
         }
 
+
         public static void Update(User user)
         {
             string name = Console.ReadLine();
+            while (!UserValidation.IsNameValid(name))
+            {
+                name = Console.ReadLine();
+            }
             string surname = Console.ReadLine();
+            while (!UserValidation.IsSurnameValid(surname))
+            {
+                surname = Console.ReadLine();
+            }
             user.Name = name;
             user.Surname = surname;
         }
-
         public static void ShowAdmins()
         {
-            foreach (User user in Users)
+            foreach (User user in UserRepository.Users)
             {
                 if (user is Admin)
                 {
                     Console.WriteLine(user.GetInfo());
                 }
-
             }
-
         }
+
+
     }
 }

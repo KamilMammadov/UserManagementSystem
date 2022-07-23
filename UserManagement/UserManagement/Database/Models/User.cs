@@ -16,16 +16,15 @@ namespace UserManagement.Database.Models
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public List<Report> Reports { get; set; }
+      
 
 
-        public User(string name, string surname, string email, string password,List<Report> reports)
+        public User(string name, string surname, string email, string password)
         {
             Name = name;
             Surname = surname;
             Email = email;
             Password = password;
-            Reports = reports;
             ID = UserRepository.IDCounter;
         }
 
@@ -50,5 +49,7 @@ namespace UserManagement.Database.Models
 
 
 
+       
     }
+
 }

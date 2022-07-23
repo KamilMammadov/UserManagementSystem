@@ -11,13 +11,18 @@ namespace UserManagement.ApplicationLogic
 {
     class DashBoard
     {
+        public static User CurrentUser { get; set; }
+
+        public DashBoard(User currentuser)
+        {
+            CurrentUser = currentuser;
+        }
 
 
-        
         public static void AdminPanel(string email)
         {
 
-        User user = UserRepository.GetUserByEmail(email);
+            User user = UserRepository.GetUserByEmail(email);
             Console.WriteLine("Admin succesfully joined", user.GetInfo());
 
             while (true)
@@ -30,6 +35,7 @@ namespace UserManagement.ApplicationLogic
                 Console.WriteLine("/remove-user");
                 Console.WriteLine("/add-user");
                 Console.WriteLine("/update-user");
+                Console.WriteLine("/reports");
                 Console.WriteLine();
                 Console.WriteLine("ADMIN USER`S COMMANDS :");
                 Console.WriteLine("/make-admin");
@@ -55,14 +61,15 @@ namespace UserManagement.ApplicationLogic
                     string targetemail = Console.ReadLine();
 
                     User RemoveUser = UserRepository.GetUserByEmail(targetemail);
-                    if (RemoveUser == null)
-                    {
-                        Console.WriteLine("Email not found");
-                    }
-                    else
+                    if (RemoveUser != null&& RemoveUser.Email != CurrentUser.Email )
                     {
                         UserRepository.Delete(RemoveUser);
                         Console.WriteLine("User succesfully deleted");
+                       
+                    }
+                    else
+                    {
+                        Console.WriteLine("Email not found and you can't remove yourself");
                     }
 
                 }
@@ -76,11 +83,33 @@ namespace UserManagement.ApplicationLogic
                     Console.WriteLine("enter user's email");
                     string updateEmail = Console.ReadLine();
                     User updateUser = UserRepository.GetUserByEmail(updateEmail);
-                    if (!UserValidation.IsAdmin(updateUser))
+                    if (!UserValidation.IsAdmin(updateUser)&& !(updateUser.Email == CurrentUser.Email))
                     {
-                        UserRepository.Update(updateUser);
+                        UserValidation.Update(updateUser);
                         Console.WriteLine("succesfully updated");
 
+                    }
+                    else
+                    {
+                        Console.WriteLine("Email not found.  You can't remove yourself");
+                    }
+                }
+                else if (command=="/reports")
+                {
+                    List<Report> reports = ReportRepository.GetReports();
+                    foreach (Report report in reports)
+                    {
+                        string isadmin = "";
+                        if (report.ToUser is Admin)
+                        {
+                            isadmin = "Admin";
+                        }
+                        else
+                        {
+                            isadmin = "Not Admin";
+                        }
+
+                        Console.WriteLine($"{report.FromUser.Name}  {report.ToUser.Name}  {report.Text} {isadmin}");
                     }
                 }
 
@@ -96,6 +125,7 @@ namespace UserManagement.ApplicationLogic
 
                 else if (command == "/show-admins")
                 {
+                    Console.WriteLine();
                     Console.WriteLine("ADMINS : ");
                     UserRepository.ShowAdmins();
 
@@ -106,11 +136,18 @@ namespace UserManagement.ApplicationLogic
                     string adminEmail = Console.ReadLine();
                     User user1 = UserRepository.GetUserByEmail(adminEmail);
 
+                    if (user1 is Admin && user.Email == AdminEmail)
+                    {
+                        Console.WriteLine("You can`t make admin to admin");
+                    }
+                    else
+                    {
                     UserRepository.Delete(user1);
-
                     Admin admin = new Admin(user1.Name, user1.Surname, user1.Email, user1.Password, user1.ID);
                     UserRepository.Add(admin);
                     Console.WriteLine($"{admin.Name} {admin.Surname} is Admin now");
+
+                    }
                 }
                 else if (command == "/remove-admin")
                 {
@@ -118,7 +155,7 @@ namespace UserManagement.ApplicationLogic
                     string targetemail = Console.ReadLine();
 
                     User adminuser = UserRepository.GetUserByEmail(targetemail);
-                    if (adminuser is Admin)
+                    if (adminuser is Admin && !(user.Email == AdminEmail))
                     {
 
                         UserRepository.Delete(adminuser);
@@ -149,10 +186,25 @@ namespace UserManagement.ApplicationLogic
             Console.WriteLine("commands : /logout \n /report ");
             string command = Console.ReadLine();
 
-            if (command == "/logout")
+            if (command == "/report")
+            {
+                string targetemail = Console.ReadLine();
+                User reportUser = UserRepository.GetUserByEmail(targetemail);
+
+                if (reportUser!=null)
+                {
+                    Console.WriteLine("ENTER TEXT");
+                    string text = Console.ReadLine();
+
+                    ReportRepository.Add(user.Email, reportUser.Email, text);
+                }
+
+            }
+            else if (command == "/logout")
             {
                 Program.Main(new string[] { });
             }
+
             else
             {
                 Console.WriteLine("command not found");
