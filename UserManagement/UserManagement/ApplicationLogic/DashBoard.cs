@@ -26,10 +26,12 @@ namespace UserManagement.ApplicationLogic
                 Console.WriteLine("/remove-user");
                 Console.WriteLine("/add-user");
                 Console.WriteLine("/update-user");
-
+                Console.WriteLine();
                 Console.WriteLine("ADMIN USER`S COMMANDS :");
                 Console.WriteLine("/make-admin");
                 Console.WriteLine("/remove-admin");
+                Console.WriteLine("/show-admins");
+                Console.WriteLine("/add-admin");
                 Console.WriteLine("/logout");
 
                 Console.WriteLine("Enter Command");
@@ -60,7 +62,7 @@ namespace UserManagement.ApplicationLogic
                     }
 
                 }
-                else if (command=="/add-user")
+                else if (command == "/add-user")
                 {
                     Authentication.Register();
                 }
@@ -72,15 +74,27 @@ namespace UserManagement.ApplicationLogic
                     User updateUser = UserRepository.GetUserByEmail(updateEmail);
                     if (!UserValidation.IsAdmin(updateUser))
                     {
-                        UserRepository.Delete(updateUser);
-                        User newUser = Authentication.Register();
-                        UserRepository.Delete(newUser);
-
-                        User user1 = new User(newUser.Name, newUser.Surname, newUser.Email, newUser.Password, updateUser.ID);
-                        UserRepository.Add(user1);
-
+                        UserRepository.Update(updateUser);
+                        Console.WriteLine("succesfully updated");
 
                     }
+                }
+
+                else if (command == "/add-admin")
+                {
+                    User adminUser = Authentication.Register();
+                    UserRepository.Delete(adminUser);
+
+                    Admin admin = new Admin(adminUser.Name, adminUser.Surname, adminUser.Email, adminUser.Password, adminUser.ID);
+                    UserRepository.Add(admin);
+                    Console.WriteLine($"{admin.Name} {admin.Surname} is new Admin now");
+                }
+
+                else if (command == "/show-admins")
+                {
+                    Console.WriteLine("ADMINS : ");
+                    UserRepository.ShowAdmins();
+
                 }
                 else if (command == "/make-admin")
                 {
@@ -88,19 +102,11 @@ namespace UserManagement.ApplicationLogic
                     string adminEmail = Console.ReadLine();
                     User user1 = UserRepository.GetUserByEmail(adminEmail);
 
-                    if (UserRepository.Delete(user1))
-                    {
-                        Admin admin = new Admin(user1.Name, user1.Surname, user1.Email, user1.Password, user1.ID);
-                        UserRepository.Add(admin);
-                        Console.WriteLine($"{admin.Name} {admin.Surname} is Admin now");
-                    }
-                    else
-                    {
-                        Console.WriteLine("not found");
-                    }
+                    UserRepository.Delete(user1);
 
-
-
+                    Admin admin = new Admin(user1.Name, user1.Surname, user1.Email, user1.Password, user1.ID);
+                    UserRepository.Add(admin);
+                    Console.WriteLine($"{admin.Name} {admin.Surname} is Admin now");
                 }
                 else if (command == "/remove-admin")
                 {
@@ -111,8 +117,9 @@ namespace UserManagement.ApplicationLogic
                     if (adminuser is Admin)
                     {
                         UserRepository.Delete(adminuser);
-                        UserRepository.Add(adminuser.Name, adminuser.Surname, adminuser.Email, adminuser.Password, adminuser.ID);
-                        UserRepository.Add(adminuser);
+                        User newuser = new User(adminuser.Name, adminuser.Surname, adminuser.Email, adminuser.Password, adminuser.ID);
+                     
+                        UserRepository.Add(newuser);
                         Console.WriteLine("Admin succesfully deleted");
                     }
                 }

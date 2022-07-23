@@ -61,7 +61,9 @@ namespace UserManagement.ApplicationLogic
             Console.WriteLine("You succesfully registered you can login now with your account");
 
             User user = UserRepository.GetUserByEmail(email);
+
             return user;
+            
         }
 
         public static void Login()

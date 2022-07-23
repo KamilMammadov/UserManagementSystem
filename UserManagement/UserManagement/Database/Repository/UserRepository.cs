@@ -55,9 +55,9 @@ namespace UserManagement.Database.Repository
             return admin;
         }
 
-        public static bool Delete(User user)
+        public static void Delete(User user)
         {
-            return Users.Remove(user);
+            Users.Remove(user);
         }
 
 
@@ -93,5 +93,25 @@ namespace UserManagement.Database.Repository
             return false;
         }
 
+        public static void Update(User user)
+        {
+            string name = Console.ReadLine();
+            string surname = Console.ReadLine();
+            user.Name = name;
+            user.Surname = surname;
+        }
+
+        public static void ShowAdmins()
+        {
+            foreach (User user in Users)
+            {
+                if (user is Admin)
+                {
+                    Console.WriteLine(user.GetInfo());
+                }
+
+            }
+
+        }
     }
 }
