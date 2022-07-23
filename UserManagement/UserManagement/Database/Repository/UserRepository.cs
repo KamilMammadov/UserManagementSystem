@@ -97,24 +97,30 @@ namespace UserManagement.Database.Repository
         }
 
 
-        public static void Update(User user)
+        public static User Update(User user)
         {
+            Console.WriteLine("Please enter name");
             string name = Console.ReadLine();
             while (!UserValidation.IsNameValid(name))
             {
+                Console.WriteLine("Please enter name again");
                 name = Console.ReadLine();
             }
+            Console.WriteLine("Please enter surname");
             string surname = Console.ReadLine();
             while (!UserValidation.IsSurnameValid(surname))
             {
+                Console.WriteLine("Please enter surname");
                 surname = Console.ReadLine();
             }
             user.Name = name;
             user.Surname = surname;
+            return user;
         }
+
         public static void ShowAdmins()
         {
-            foreach (User user in UserRepository.Users)
+            foreach (User user in Users)
             {
                 if (user is Admin)
                 {

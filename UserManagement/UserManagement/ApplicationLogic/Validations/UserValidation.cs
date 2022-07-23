@@ -44,6 +44,17 @@ namespace UserManagement.ApplicationLogic.Validations
             return password == confirmPassword;
         }
 
+        public static bool isEmailUnical(string email)
+        {
+            foreach (User user in UserRepository.Users)
+            {
+                if (user.Email==email)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         ///////////////////////////////
         ///

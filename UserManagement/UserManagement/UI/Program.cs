@@ -7,14 +7,14 @@ namespace UserManagement
     {
         public static void Main(string[] args)
         {
+            while (true)
+            {
             Console.WriteLine("------------------------");
 
             Console.WriteLine("commands :");
 
             Console.WriteLine("reg");
             Console.WriteLine("log");
-            while (true)
-            {
                 Console.WriteLine("enterCommand");
                 string command = Console.ReadLine();
 

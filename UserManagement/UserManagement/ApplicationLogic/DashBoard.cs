@@ -27,6 +27,7 @@ namespace UserManagement.ApplicationLogic
 
             while (true)
             {
+
                 Console.WriteLine("-----------------------------------------------------------");
                 Console.WriteLine("Commands");
 
@@ -50,6 +51,7 @@ namespace UserManagement.ApplicationLogic
                 if (command == "/show-users")
                 {
                     List<User> Users = UserRepository.GetAll();
+
                     foreach (User oneuser in Users)
                     {
                         Console.WriteLine(oneuser.ID + " " + oneuser.Name + " " + oneuser.Surname + " " + oneuser.Email);
@@ -76,6 +78,7 @@ namespace UserManagement.ApplicationLogic
                 else if (command == "/add-user")
                 {
                     Authentication.Register();
+                    Console.WriteLine("User Added");
                 }
 
                 else if (command == "/update-user")
@@ -85,8 +88,8 @@ namespace UserManagement.ApplicationLogic
                     User updateUser = UserRepository.GetUserByEmail(updateEmail);
                     if (!UserValidation.IsAdmin(updateUser)&& !(updateUser.Email == CurrentUser.Email))
                     {
-                        UserValidation.Update(updateUser);
-                        Console.WriteLine("succesfully updated");
+                        User newUser= UserRepository.Update(updateUser);
+                        Console.WriteLine($"{updateUser.Name} {updateUser.Surname} succesfully updated to {newUser.Name} {newUser.Surname}");
 
                     }
                     else
@@ -100,7 +103,7 @@ namespace UserManagement.ApplicationLogic
                     foreach (Report report in reports)
                     {
                         string isadmin = "";
-                        if (report.ToUser is Admin)
+                        if (report.ToUser is Admin )
                         {
                             isadmin = "Admin";
                         }
@@ -136,7 +139,7 @@ namespace UserManagement.ApplicationLogic
                     string adminEmail = Console.ReadLine();
                     User user1 = UserRepository.GetUserByEmail(adminEmail);
 
-                    if (user1 is Admin && user.Email == AdminEmail)
+                    if (user1 is Admin && user.Email != CurrentUser.Email)
                     {
                         Console.WriteLine("You can`t make admin to admin");
                     }
@@ -155,7 +158,7 @@ namespace UserManagement.ApplicationLogic
                     string targetemail = Console.ReadLine();
 
                     User adminuser = UserRepository.GetUserByEmail(targetemail);
-                    if (adminuser is Admin && !(user.Email == AdminEmail))
+                    if (adminuser is Admin)
                     {
 
                         UserRepository.Delete(adminuser);
@@ -202,6 +205,7 @@ namespace UserManagement.ApplicationLogic
             }
             else if (command == "/logout")
             {
+                CurrentUser = null;
                 Program.Main(new string[] { });
             }
 

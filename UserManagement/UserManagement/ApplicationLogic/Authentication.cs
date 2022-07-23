@@ -35,7 +35,7 @@ namespace UserManagement.ApplicationLogic
             Console.WriteLine("email :");
             string email = Console.ReadLine();
 
-            while (!UserValidation.IsEmailValid(email))
+            while (!UserValidation.IsEmailValid(email) & UserValidation.isEmailUnical(email))
             {
                 Console.WriteLine("write email again");
                 email = Console.ReadLine();
