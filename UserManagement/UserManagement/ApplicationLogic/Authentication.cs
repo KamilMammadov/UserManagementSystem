@@ -11,7 +11,7 @@ namespace UserManagement.ApplicationLogic
 {
     class Authentication
     {
-        public static void Register()
+        public static User Register()
         {
             Console.WriteLine();
             Console.WriteLine("name :");
@@ -59,6 +59,9 @@ namespace UserManagement.ApplicationLogic
 
             UserRepository.Add(name, surname, email, password);
             Console.WriteLine("You succesfully registered you can login now with your account");
+
+            User user = UserRepository.GetUserByEmail(email);
+            return user;
         }
 
         public static void Login()

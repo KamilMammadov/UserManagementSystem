@@ -61,5 +61,18 @@ namespace UserManagement.ApplicationLogic.Validations
             return false;
 
         }
+
+        public static bool IsAdmin(User user)
+        {
+            if (user is Admin)
+            {
+                Console.WriteLine("User is Admin");
+                return true;
+            }
+            return false;
+        }
+
+
+
     }
 }

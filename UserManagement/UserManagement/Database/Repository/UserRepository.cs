@@ -24,7 +24,7 @@ namespace UserManagement.Database.Repository
 
         public static List<User> Users { get; set; } = new List<User>()
         {
-            new Admin ("Kamil","Mammadov","kamil@gmail.com","123321"),
+            new User ("Kamil","Mammadov","kamil@gmail.com","123321"),
             new Admin ("Super","admin","admin@gmail.com","123321")
 
 

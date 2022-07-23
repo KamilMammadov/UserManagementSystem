@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserManagement.ApplicationLogic.Validations;
 using UserManagement.Database.Models;
 using UserManagement.Database.Repository;
 
@@ -21,9 +22,10 @@ namespace UserManagement.ApplicationLogic
                 Console.WriteLine("Commands");
 
                 Console.WriteLine("USER COMMANDS : ");
-                Console.WriteLine("/show-user");
-                Console.WriteLine("/remove");
-
+                Console.WriteLine("/show-users");
+                Console.WriteLine("/remove-user");
+                Console.WriteLine("/add-user");
+                Console.WriteLine("/update-user");
 
                 Console.WriteLine("ADMIN USER`S COMMANDS :");
                 Console.WriteLine("/make-admin");
@@ -33,8 +35,54 @@ namespace UserManagement.ApplicationLogic
                 Console.WriteLine("Enter Command");
                 string command = Console.ReadLine();
 
+                if (command == "/show-users")
+                {
+                    List<User> Users = UserRepository.GetAll();
+                    foreach (User oneuser in Users)
+                    {
+                        Console.WriteLine(oneuser.ID + " " + oneuser.Name + " " + oneuser.Surname + " " + oneuser.Email);
+                    }
+                }
+                else if (command == "/remove-user")
+                {
+                    Console.WriteLine("Please Enter email");
+                    string targetemail = Console.ReadLine();
 
-                if (command == "/make-admin")
+                    User RemoveUser = UserRepository.GetUserByEmail(targetemail);
+                    if (RemoveUser == null)
+                    {
+                        Console.WriteLine("Email not found");
+                    }
+                    else
+                    {
+                        UserRepository.Delete(RemoveUser);
+                        Console.WriteLine("User succesfully deleted");
+                    }
+
+                }
+                else if (command=="/add-user")
+                {
+                    Authentication.Register();
+                }
+
+                else if (command == "/update-user")
+                {
+                    Console.WriteLine("enter user's email");
+                    string updateEmail = Console.ReadLine();
+                    User updateUser = UserRepository.GetUserByEmail(updateEmail);
+                    if (!UserValidation.IsAdmin(updateUser))
+                    {
+                        UserRepository.Delete(updateUser);
+                        User newUser = Authentication.Register();
+                        UserRepository.Delete(newUser);
+
+                        User user1 = new User(newUser.Name, newUser.Surname, newUser.Email, newUser.Password, updateUser.ID);
+                        UserRepository.Add(user1);
+
+
+                    }
+                }
+                else if (command == "/make-admin")
                 {
                     Console.WriteLine("Enter email");
                     string adminEmail = Console.ReadLine();
@@ -68,31 +116,7 @@ namespace UserManagement.ApplicationLogic
                         Console.WriteLine("Admin succesfully deleted");
                     }
                 }
-                else if (command == "/showuser")
-                {
-                    List<User> Users = UserRepository.GetAll();
-                    foreach (User oneuser in Users)
-                    {
-                        Console.WriteLine(oneuser.ID + " " + oneuser.Name + " " + oneuser.Surname + " " + oneuser.Email);
-                    }
-                }
-                else if (command == "/remove")
-                {
-                    Console.WriteLine("Please Enter email");
-                    string targetemail = Console.ReadLine();
 
-                    User RemoveUser = UserRepository.GetUserByEmail(targetemail);
-                    if (RemoveUser == null)
-                    {
-                        Console.WriteLine("Email not found");
-                    }
-                    else
-                    {
-                        UserRepository.Delete(RemoveUser);
-                        Console.WriteLine("User succesfully deleted");
-                    }
-
-                }
                 else if (command == "/logout")
                 {
                     Program.Main(new string[] { });
