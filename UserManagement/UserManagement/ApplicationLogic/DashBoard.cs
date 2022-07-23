@@ -71,7 +71,7 @@ namespace UserManagement.ApplicationLogic
                     }
                     else
                     {
-                        Console.WriteLine("Email not found and you can't remove yourself");
+                        Console.WriteLine("Email not found / you can't remove yourself");
                     }
 
                 }
@@ -94,7 +94,7 @@ namespace UserManagement.ApplicationLogic
                     }
                     else
                     {
-                        Console.WriteLine("Email not found.  You can't remove yourself");
+                        Console.WriteLine("Email not found.  /You can't remove yourself");
                     }
                 }
                 else if (command=="/reports")
