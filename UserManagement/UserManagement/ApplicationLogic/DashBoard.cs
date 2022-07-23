@@ -146,7 +146,7 @@ namespace UserManagement.ApplicationLogic
             Console.WriteLine($"User successfully authenticated : {user.GetInfo()}");
             Console.WriteLine();
 
-            Console.WriteLine("commands : / logout ");
+            Console.WriteLine("commands : /logout \n /report ");
             string command = Console.ReadLine();
 
             if (command == "/logout")
