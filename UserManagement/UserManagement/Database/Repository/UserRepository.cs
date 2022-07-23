@@ -59,6 +59,7 @@ namespace UserManagement.Database.Repository
         {
             Users.Remove(user);
         }
+       
 
 
         public static List<User> GetAll()

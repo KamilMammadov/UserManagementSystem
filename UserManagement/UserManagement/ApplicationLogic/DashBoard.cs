@@ -11,9 +11,13 @@ namespace UserManagement.ApplicationLogic
 {
     class DashBoard
     {
+
+
+        
         public static void AdminPanel(string email)
         {
-            User user = UserRepository.GetUserByEmail(email);
+
+        User user = UserRepository.GetUserByEmail(email);
             Console.WriteLine("Admin succesfully joined", user.GetInfo());
 
             while (true)
@@ -116,12 +120,12 @@ namespace UserManagement.ApplicationLogic
                     User adminuser = UserRepository.GetUserByEmail(targetemail);
                     if (adminuser is Admin)
                     {
+
                         UserRepository.Delete(adminuser);
-                        User newuser = new User(adminuser.Name, adminuser.Surname, adminuser.Email, adminuser.Password, adminuser.ID);
-                     
-                        UserRepository.Add(newuser);
                         Console.WriteLine("Admin succesfully deleted");
+
                     }
+
                 }
 
                 else if (command == "/logout")
