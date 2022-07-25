@@ -16,7 +16,7 @@ namespace UserManagement.Database.Models
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-      
+        public DateTime DateTime { get; set; }
 
 
         public User(string name, string surname, string email, string password)
@@ -26,6 +26,7 @@ namespace UserManagement.Database.Models
             Email = email;
             Password = password;
             ID = UserRepository.IDCounter;
+            DateTime = DateTime.Now;
         }
 
         
@@ -44,7 +45,7 @@ namespace UserManagement.Database.Models
     {
         public virtual string GetInfo()
         {
-            return Name + " " + Surname;
+            return Name + " " + Surname+" "+DateTime;
         }
 
 

@@ -18,7 +18,8 @@ namespace UserManagement.Database.Models
         public string ToEmail { get; set; }
 
         public string Text { get; set; }
-   
+        public DateTime ReportTime { get; set; }
+
 
         public Report(string fromEmail,string toEmail,string text)
         {
@@ -27,6 +28,7 @@ namespace UserManagement.Database.Models
             ToEmail = toEmail;
             Text = text;
             _rowNumber++;
+            ReportTime = DateTime.Now;
         }
 
     

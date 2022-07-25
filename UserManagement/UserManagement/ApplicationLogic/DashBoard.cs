@@ -112,7 +112,7 @@ namespace UserManagement.ApplicationLogic
                             isadmin = "Not Admin";
                         }
 
-                        Console.WriteLine($"{report.FromUser.Name}  {report.ToUser.Name}  {report.Text} {isadmin}");
+                        Console.WriteLine($"{report.FromUser.Name}  {report.ToUser.Name}  {report.Text} {isadmin} {report.ReportTime}");
                     }
                 }
 
